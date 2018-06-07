@@ -2,7 +2,7 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
-from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
+from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions, UneditableField
 
 
 class MessageForm(forms.Form):
@@ -10,6 +10,14 @@ class MessageForm(forms.Form):
 
     textarea = forms.CharField(
         widget=forms.Textarea(),
+    )
+
+    uneditable_field = forms.ChoiceField(
+        choices=(
+            ('one', 'Option One'),
+            ('two', 'Option two'),
+        ),
+        initial='two'
     )
 
     radio_buttons = forms.ChoiceField(
@@ -67,6 +75,7 @@ class MessageForm(forms.Form):
         Field('text_input', css_class='form-control-lg'),
         Field('textarea', rows="3", css_class='form-control-lg'),
         'radio_buttons',
+        UneditableField('uneditable_field'),
         Field('checkboxes', style="background: #FAFAFA"),
         AppendedText('appended_text', '.00'),
         AppendedText('appended_text2', '.00', css_class='form-control-lg'),
@@ -82,6 +91,7 @@ class MessageForm(forms.Form):
             Submit('cancel', 'Cancel'),
         )
     )
+
 
 class HorizontalMessageForm(forms.Form):
     text_input = forms.CharField()
@@ -156,7 +166,10 @@ class HorizontalMessageForm(forms.Form):
         Field('file_field'),
         Div(
             Div(
-                Submit('save_changes', 'Save changes', css_class="btn-primary"),
+                Submit(
+                    'save_changes',
+                    'Save changes',
+                    css_class="btn-primary"),
                 Submit('cancel', 'Cancel'),
                 css_class='col-8 ml-auto'
             ),
